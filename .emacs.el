@@ -44,6 +44,23 @@
 (when (require 'migemo nil t)
   (setq migemo-coding-system 'utf-8-unix))
 
+;; web-mode
+(add-to-list 'load-path "~/.emacs.d/")
+(when (require 'web-mode nil t)
+  (add-hook 'web-mode-hook
+	    (lambda()
+	      (auto-complete-mode t)))
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)))
+
+;;矩形編集モード
+(cua-mode t)
+(setq cua-enable-cua-keys nil)
+
+;; shell script mode
+(add-hook 'shell-script-mode
+	  (lambda ()
+	    (indent-tabs-mode nil)))
+
 ;;スタートアップを消す
 (setq inhibit-startup-message t)
 
@@ -151,7 +168,7 @@
 (add-hook 'js2-mode-hook
           (lambda ()
 	    (require 'js)
-	    (setq js-indent-level 2
+	    (setq js-indent-level 4
 		  indent-tabs-mode nil)
 	    (set (make-local-variable 'indent-line-function) 'js-indent-line)
 	    (setq show-trailing-whitespace t)
@@ -205,13 +222,16 @@
 ;; python-mode
 (flymake-init-maker flymake-python-init
 		    "epylint" '())
-(push '("\\.py$"	flymake-python-init) flymake-allowed-file-name-masks)
+(defadvice flymake-get-file-name-mode-and-masks (after flymake-get-file-name-mode-and-masks-python activate)
+  (when (eq major-mode 'python-mode)
+    (setq ad-return-value '(flymake-python-init))))
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (define-key python-mode-map "\M-p" 'flymake-goto-prev-error)
 	    (define-key python-mode-map "\M-n" 'flymake-goto-next-error)
 	    (define-key python-mode-map "\C-cd" 'flymake-display-err-minibuf)
 	    (define-key python-mode-map "\C-cf" 'flymake-start-syntax-check)
+	    (auto-complete-mode t)
 	    (setq show-trailing-whitespace t)
 	    (setq indent-tabs-mode nil)
 	    (flymake-mode t)))
