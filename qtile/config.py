@@ -38,14 +38,13 @@ keys = [
         [sup], "space",
         lazy.layout.next()
     ),
-    Key([sup], "h",      lazy.to_screen(1)),
-    Key([sup], "l",      lazy.to_screen(0)),
 
     Key([sup], "Return", lazy.spawn("urxvt")),
     Key([sup], "m", lazy.spawn("nautilus --no-desktop")),
     Key([sup], "e", lazy.spawn("emacs")),
     Key([sup], "c", lazy.spawn("google-chrome")),
     Key([sup], "p", lazy.spawn("vlc")),
+    Key([sup], "l", lazy.spawn("slimlock")),
 
     # Toggle between different layouts as defined below
     Key([sup], "Tab",    lazy.nextlayout()),
