@@ -224,6 +224,7 @@
 	  (lambda ()
 	    (define-key python-mode-map "\M-p" 'flycheck-previous-error)
 	    (define-key python-mode-map "\M-n" 'flycheck-next-error)
+	    (define-key python-mode-map "\C-cf" 'flycheck-buffer)
 	    (auto-complete-mode t)
 	    (setq show-trailing-whitespace t)
 	    (setq indent-tabs-mode nil)
