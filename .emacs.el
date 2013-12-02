@@ -111,6 +111,9 @@
 ;;shift + 矢印でウィンドウを移動
 (windmove-default-keybindings)
 
+;; 末尾のスペースを紫
+(set-face-background 'trailing-whitespace "Purple")
+
 ;;flymake
 (require 'flymake)
 ;;flymake colors
@@ -170,7 +173,6 @@
 		  indent-tabs-mode nil)
 	    (set (make-local-variable 'indent-line-function) 'js-indent-line)
 	    (setq show-trailing-whitespace t)
-	    (set-face-background 'trailing-whitespace "Purple")
 	    (define-key js2-mode-map "\M-n" 'next-error)
 	    (define-key js2-mode-map "\M-p" 'previous-error)))
 	    
@@ -200,7 +202,6 @@
 		    ("\\.cu$"  (".h"))))
 	    ;;行末のスペースを色づけ
 	    (setq show-trailing-whitespace t)
-	    (set-face-background 'trailing-whitespace "Purple")
 	    ;;flymake
 	    (flymake-mode t)
 	    (setq flymake-err-line-patterns
@@ -249,8 +250,7 @@
 (add-hook 'text-mode-hook
 	  (lambda ()
 	    ;;行末のスペースを色づけ
-	    (setq show-trailing-whitespace t)
-	    (set-face-background 'trailing-whitespace "Purple")))
+	    (setq show-trailing-whitespace t)))
 
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
