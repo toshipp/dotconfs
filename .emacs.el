@@ -117,8 +117,9 @@
 ;;flymake
 (require 'flymake)
 ;;flymake colors
-(set-face-background 'flymake-errline "dark red")
-(set-face-background 'flymake-warnline "dark slate blue")
+(custom-set-faces
+ '(flymake-errline ((t (:underline (:style wave :color "Red1")))))
+ '(flymake-warnline ((t (:underline (:style wave :color "DarkOrange"))))))
 ;; flymakeでエラー発生時に無視する
 (defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
   (setq flymake-check-was-interrupted t))
