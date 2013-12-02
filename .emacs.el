@@ -220,21 +220,14 @@
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
 
 ;; python-mode
-(flymake-init-maker flymake-python-init
-		    "epylint" '())
-(defadvice flymake-get-file-name-mode-and-masks (after flymake-get-file-name-mode-and-masks-python activate)
-  (when (eq major-mode 'python-mode)
-    (setq ad-return-value '(flymake-python-init))))
 (add-hook 'python-mode-hook
 	  (lambda ()
-	    (define-key python-mode-map "\M-p" 'flymake-goto-prev-error)
-	    (define-key python-mode-map "\M-n" 'flymake-goto-next-error)
-	    (define-key python-mode-map "\C-cd" 'flymake-display-err-minibuf)
-	    (define-key python-mode-map "\C-cf" 'flymake-start-syntax-check)
+	    (define-key python-mode-map "\M-p" 'flycheck-previous-error)
+	    (define-key python-mode-map "\M-n" 'flycheck-next-error)
 	    (auto-complete-mode t)
 	    (setq show-trailing-whitespace t)
 	    (setq indent-tabs-mode nil)
-	    (flymake-mode t)))
+	    (flycheck-mode t)))
 
 ;; view-mode
 (add-hook 'view-mode-hook
