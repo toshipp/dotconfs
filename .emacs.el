@@ -114,57 +114,22 @@
 ;; 末尾のスペースを紫
 (set-face-background 'trailing-whitespace "Purple")
 
-;;flymake
-(require 'flymake)
-;;flymake colors
-(custom-set-faces
- '(flymake-errline ((t (:underline (:style wave :color "Red1")))))
- '(flymake-warnline ((t (:underline (:style wave :color "DarkOrange"))))))
-;; flymakeでエラー発生時に無視する
-(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
-  (setq flymake-check-was-interrupted t))
-(ad-activate 'flymake-post-syntax-check)
-(defmacro flymake-init-maker (name command opt)
-  `(defun ,name ()
-     (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-			  'flymake-create-temp-inplace))
-	    (local-file  (file-relative-name
-			  temp-file
-			  (file-name-directory buffer-file-name))))
-       (list ,command (append ,opt (list local-file))))))
-
 ;; linum
 (require 'linum)
 (global-linum-mode)
 
-;;c-mode
-(flymake-init-maker flymake-cc-init-no-makefile
-		    "g++" '("-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20"))
-(defun flymake-cc-init()
-  (if (file-exists-p "Makefile")
-      (flymake-simple-make-init)
-    (flymake-cc-init-no-makefile)))
-(push '("\\.hpp$"	flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.cpp$"	flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.h$"		flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.c$"		flymake-cc-init) flymake-allowed-file-name-masks)
-(push '("\\.cu$"	flymake-cc-init) flymake-allowed-file-name-masks)
-
-;;mini-bufferにエラーを表示
-(defun flymake-display-err-minibuf ()
-  "Displays the error/warning for the current line in the minibuffer"
-  (interactive)
-  (let* ((line-no             (flymake-current-line-no))
-         (line-err-info-list  (nth 0 (flymake-find-err-info flymake-err-info line-no)))
-         (count               (length line-err-info-list)))
-    (while (> count 0)
-      (when line-err-info-list
-        (let* ((file       (flymake-ler-file (nth (1- count) line-err-info-list)))
-               (full-file  (flymake-ler-full-file (nth (1- count) line-err-info-list)))
-               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
-               (line       (flymake-ler-line (nth (1- count) line-err-info-list))))
-          (message "[%s] %s" line text)))
-      (setq count (1- count)))))
+;; flycheck
+(when (require 'flycheck nil t)
+  (flycheck-define-checker c/c++
+    "A C/C++ checker using g++."
+    :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+    :error-patterns  ((error line-start
+			     (file-name) ":" line ":" column ":" " エラー: " (message)
+			     line-end)
+		      (warning line-start
+			       (file-name) ":" line ":" column ":" " 警告: " (message)
+			       line-end))
+    :modes (c-mode c++-mode)))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
@@ -183,10 +148,9 @@
 	  '(lambda ()
 	    (define-key c-mode-base-map "\C-cc" 'compile)
 	    (define-key c-mode-base-map "\C-ce" 'next-error)
-	    (define-key c-mode-base-map "\C-cd" 'flymake-display-err-minibuf)
-	    (define-key c-mode-base-map "\C-cf" 'flymake-start-syntax-check)
-	    (define-key c-mode-base-map "\M-p" 'flymake-goto-prev-error)
-	    (define-key c-mode-base-map "\M-n" 'flymake-goto-next-error)
+	    (define-key c-mode-base-map "\M-p" 'flycheck-previous-error)
+	    (define-key c-mode-base-map "\M-n" 'flycheck-next-error)
+	    (define-key c-mode-base-map "\C-cf" 'flycheck-buffer)
 	    (define-key c-mode-base-map "\M-t" 'ff-find-other-file)
 	    (setq ff-other-file-alist
 		  '(("\\.cc$"  (".hh" ".h"))
@@ -201,15 +165,9 @@
 		    ("\\.cpp$" (".hpp" ".hh" ".h"))
 		    ("\\.hpp$" (".cpp" ".c"))
 		    ("\\.cu$"  (".h"))))
-	    ;;行末のスペースを色づけ
 	    (setq show-trailing-whitespace t)
-	    ;;flymake
-	    (flymake-mode t)
-	    (setq flymake-err-line-patterns
-		  (cons
-		   '("\\(.+\\):\\([0-9]+\\):\\([0-9]+\\): \\(.+\\)" 1 2 3 4)
-		   flymake-err-line-patterns))
-	    ;;auto completion
+	    (flycheck-mode t)
+	    (flycheck-select-checker 'c/c++)
 	    (auto-complete-mode t)
 	    (c-set-style "k&r")
 	    (setq c-basic-indent 4)
