@@ -55,9 +55,9 @@
 (setq cua-enable-cua-keys nil)
 
 ;; shell script mode
-(add-hook 'shell-script-mode
+(add-hook 'sh-mode-hook
 	  (lambda ()
-	    (indent-tabs-mode nil)))
+	    (setq indent-tabs-mode nil)))
 
 ;;スタートアップを消す
 (setq inhibit-startup-message t)
