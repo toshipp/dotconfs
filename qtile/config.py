@@ -42,8 +42,8 @@ keys = [
     Key([sup], "Return", lazy.spawn("urxvt")),
     Key([sup], "m", lazy.spawn("nautilus --no-desktop")),
     Key([sup], "e", lazy.spawn("emacs")),
-    Key([sup], "c", lazy.spawn("google-chrome")),
-    Key([sup], "p", lazy.spawn("vlc")),
+    Key([sup], "c", lazy.spawn("google-chrome-stable")),
+    Key([sup], "p", lazy.spawn("cmplayer")),
     Key([sup], "l", lazy.spawn("slimlock")),
 
     # Toggle between different layouts as defined below
