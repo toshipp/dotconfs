@@ -40,7 +40,7 @@ keys = [
     ),
 
     Key([sup], "Return", lazy.spawn("urxvt")),
-    Key([sup], "m", lazy.spawn("nautilus --no-desktop")),
+    Key([sup], "m", lazy.spawn("nemo")),
     Key([sup], "e", lazy.spawn("emacs")),
     Key([sup], "c", lazy.spawn("google-chrome-stable")),
     Key([sup], "p", lazy.spawn("cmplayer")),
