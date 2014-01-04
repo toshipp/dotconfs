@@ -213,13 +213,12 @@ alias emacs='emacs -nw'
 
 stty stop undef
 
-case "${TERM}" in
-screen*) ;;
-*)
-if tmux ls |grep -q -v attached ; then
-  exec tmux attach
-else
-  exec tmux
+if which tmux 2>&1 >/dev/null; then
+    if [ -z "$TMUX" ]; then
+        if tmux ls 2>/dev/null | grep -q -v attached; then
+            exec tmux attach
+        else
+            exec tmux
+        fi
+    fi
 fi
-;;
-esac
