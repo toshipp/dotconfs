@@ -1,9 +1,0 @@
-xset r rate 250 70
-#powersave mode off
-setterm -powersave off -powerdown 0
-#screensaver off
-xset s off
-setxkbmap -option ctrl:nocaps
-[ -x /usr/bin/dropbox ] && /usr/bin/dropbox start
-[ -x /usr/bin/nitrogen ] && /usr/bin/nitrogen --restore
-[ -x /usr/bin/gnome-sound-applet ] && /usr/bin/gnome-sound-applet &

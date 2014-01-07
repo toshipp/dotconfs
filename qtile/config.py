@@ -40,10 +40,10 @@ keys = [
     ),
 
     Key([sup], "Return", lazy.spawn("urxvt")),
-    Key([sup], "m", lazy.spawn("nautilus --no-desktop")),
+    Key([sup], "m", lazy.spawn("nemo")),
     Key([sup], "e", lazy.spawn("emacs")),
-    Key([sup], "c", lazy.spawn("google-chrome")),
-    Key([sup], "p", lazy.spawn("vlc")),
+    Key([sup], "c", lazy.spawn("google-chrome-stable")),
+    Key([sup], "p", lazy.spawn("cmplayer")),
     Key([sup], "l", lazy.spawn("slimlock")),
 
     # Toggle between different layouts as defined below
@@ -88,6 +88,9 @@ screens = [
                         widget.Prompt(),
                         widget.CurrentLayout(),
                         widget.Systray(),
+                        widget.CPUGraph(graph_color='18BAEB', fill_color='1667EB.3'),
+                        widget.NetGraph(graph_color='00FE81', fill_color='00B25B.3'),
+                        widget.HDDBusyGraph(graph_color='ffff00', fill_color='4d4d00'),
                         widget.Clock('%Y-%m-%d %a %I:%M %p'),
                     ],
                     30,
