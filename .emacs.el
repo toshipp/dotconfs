@@ -26,7 +26,6 @@
   (add-hook 'haskell-mode-hook 'font-lock-mode)
   (add-hook 'haskell-mode-hook 'imenu-add-menubar-index))
 
-
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
@@ -56,16 +55,14 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
-;; shell script mode
-(add-hook 'sh-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode nil)))
-
 ;;スタートアップを消す
 (setq inhibit-startup-message t)
 
 ;;カーソル位置の色付け
 (global-hl-line-mode)
+
+;; no tabs
+(setq-default indent-tabs-mode nil)
 
 ;;フレームの設定
 (if window-system
@@ -137,13 +134,12 @@
 (add-hook 'js2-mode-hook
           (lambda ()
 	    (require 'js)
-	    (setq js-indent-level 4
-		  indent-tabs-mode nil)
+	    (setq js-indent-level 4)
 	    (set (make-local-variable 'indent-line-function) 'js-indent-line)
 	    (setq show-trailing-whitespace t)
 	    (define-key js2-mode-map "\M-n" 'next-error)
 	    (define-key js2-mode-map "\M-p" 'previous-error)))
-	    
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
@@ -174,7 +170,6 @@
 	    (c-set-style "k&r")
 	    (setq c-basic-indent 4)
 	    (setq c-basic-offset 4)
-	    (setq indent-tabs-mode nil)
 	    (c-toggle-hungry-state 1)))
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
@@ -187,7 +182,6 @@
 	    (define-key python-mode-map "\C-cf" 'flycheck-buffer)
 	    (auto-complete-mode t)
 	    (setq show-trailing-whitespace t)
-	    (setq indent-tabs-mode nil)
 	    (flycheck-mode t)))
 
 ;; typescript-mode
