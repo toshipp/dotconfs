@@ -4,8 +4,7 @@
 ;; package
 (when (require 'package nil t)
   (add-to-list 'package-archives
-	       '("melpa" . "http://melpa.milkbox.net/packages/")
-	       t)
+	       '("melpa" . "http://melpa.milkbox.net/packages/"))
   (package-initialize))
 
 ;; mozc
@@ -13,6 +12,9 @@
   (setq default-input-method "japanese-mozc")
   ;; (setq mozc-candidate-style 'overlay)
   )
+
+;; input method
+(global-set-key "\C-o" 'toggle-input-method)
 
 ;;ctrl-hをdelete
 (global-set-key "\C-h" 'delete-backward-char)
@@ -187,6 +189,10 @@
 	    (setq show-trailing-whitespace t)
 	    (setq indent-tabs-mode nil)
 	    (flycheck-mode t)))
+
+;; typescript-mode
+(when (require 'typescript nil t)
+  (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode)))
 
 ;; view-mode
 (add-hook 'view-mode-hook
