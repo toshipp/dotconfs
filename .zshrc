@@ -38,6 +38,7 @@ add-zsh-hook precmd _update_vcs_info_msg
 autoload -Uz promptinit
 promptinit
 prompt adam1
+RPROMPT="%1(v|%F{green}%1v%f|)"
 
 ## colors
 autoload -Uz colors
