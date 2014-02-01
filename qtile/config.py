@@ -19,11 +19,13 @@ keys = [
     # Move windows up or down in current stack
     Key(
         [sup, "control"], "k",
-        lazy.layout.shuffle_down()
+        lazy.layout.shuffle_down(),
+        lazy.layout.client_to_next()
     ),
     Key(
         [sup, "control"], "j",
-        lazy.layout.shuffle_up()
+        lazy.layout.shuffle_up(),
+        lazy.layout.client_to_previous()
     ),
     Key(
         [sup], "bracketleft",
@@ -75,6 +77,7 @@ for i in groups:
 
 layouts = [
     layout.MonadTall(),
+    layout.Stack(),
     layout.RatioTile(border_focus='#ff0000', border_width=2),
     layout.TreeTab()
     ]
