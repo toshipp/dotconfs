@@ -57,6 +57,10 @@
 	      (auto-complete-mode t)))
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)))
 
+;; undo-tree
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode))
+
 ;;矩形編集モード
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
