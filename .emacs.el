@@ -85,23 +85,16 @@
 ;; no tabs
 (setq-default indent-tabs-mode nil)
 
+;;テーマの設定
+(load-theme 'tsdh-dark t)
+
 ;;フレームの設定
 (if window-system
     (progn
       ;;スクロールバーは左
       (set-scroll-bar-mode 'left)
-      ;;テーマの設定
-      (if (string-match "^24" emacs-version)
-	  (load-theme 'tsdh-dark t)
-	(progn
-	  (add-to-list 'default-frame-alist '(background-color . "gray15"))
-	  (add-to-list 'default-frame-alist '(foreground-color . "grey90"))
-	  (add-to-list 'default-frame-alist '(cursor-color . "pink"))))
       ;;透過率
       (add-to-list 'default-frame-alist '(alpha . 95))
-      ;; フレームのサイズ
-      (add-to-list 'default-frame-alist '(width . 80))
-      (add-to-list 'default-frame-alist '(height . 30))
       (cond
        ((eq system-type 'gnu/linux)
 	;; Xのクリップボートをつかう
