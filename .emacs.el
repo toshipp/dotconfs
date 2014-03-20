@@ -2,10 +2,34 @@
 (prefer-coding-system 'utf-8)
 
 ;; package
-(when (require 'package nil t)
-  (add-to-list 'package-archives
-	       '("melpa" . "http://melpa.milkbox.net/packages/"))
-  (package-initialize))
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
+
+(require 'cl)
+(defvar installing-package-list
+  '(
+    auto-complete
+    flycheck
+    go-mode
+    js2-mode
+    json-mode
+    markdown-mode
+    tss
+    undo-tree
+    web-mode
+    yaml-mode
+    ))
+
+;; auto install
+(let ((not-installed (loop for x in installing-package-list
+                           when (not (package-installed-p x))
+                           collect x)))
+  (when not-installed
+    (package-refresh-contents)
+    (dolist (pkg not-installed)
+      (package-install pkg))))
 
 ;; mozc
 (when (require 'mozc nil t)
@@ -19,25 +43,20 @@
 ;;ctrl-hをdelete
 (global-set-key "\C-h" 'delete-backward-char)
 
-;; haskell-mode
-(when (require 'haskell-mode nil t)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-  (add-hook 'haskell-mode-hook 'font-lock-mode)
-  (add-hook 'haskell-mode-hook 'imenu-add-menubar-index))
-
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
 (global-set-key "\C-x\M-f" 'recentf-open-files)
 
 ;; auto-complete
-(when (require 'auto-complete-config nil t)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
-  (ac-config-default)
-  (setq ac-use-quick-help nil)
-  (setq ac-auto-show-menu 0)
-  (setq ac-auto-start 2))
+(eval-after-load "auto-complete"
+  '(progn
+     (require 'auto-complete-config)
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+     (ac-config-default)
+     (setq ac-use-quick-help nil)
+     (setq ac-auto-show-menu 0)
+     (setq ac-auto-start 2)))
 
 ;; migemo
 (when (require 'migemo nil t)
@@ -48,14 +67,6 @@
   (setq migemo-user-dictionary nil)
   (setq migemo-regex-dictionary nil)
   (setq migemo-coding-system 'utf-8-unix))
-
-;; web-mode
-(add-to-list 'load-path "~/.emacs.d/")
-(when (require 'web-mode nil t)
-  (add-hook 'web-mode-hook
-	    (lambda()
-	      (auto-complete-mode t)))
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)))
 
 ;; undo-tree
 (when (require 'undo-tree nil t)
@@ -128,17 +139,18 @@
 (global-linum-mode)
 
 ;; flycheck
-(when (require 'flycheck nil t)
-  (flycheck-define-checker c/c++
-    "A C/C++ checker using g++."
-    :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-    :error-patterns  ((error line-start
-			     (file-name) ":" line ":" column ":" " エラー: " (message)
-			     line-end)
-		      (warning line-start
-			       (file-name) ":" line ":" column ":" " 警告: " (message)
-			       line-end))
-    :modes (c-mode c++-mode)))
+(eval-after-load "flycheck"
+  '(progn
+     (flycheck-define-checker c/c++
+       "A C/C++ checker using g++."
+       :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+       :error-patterns  ((error line-start
+                                (file-name) ":" line ":" column ":" " エラー: " (message)
+                                line-end)
+                         (warning line-start
+                                  (file-name) ":" line ":" column ":" " 警告: " (message)
+                                  line-end))
+       :modes (c-mode c++-mode))))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
@@ -195,8 +207,13 @@
 	    (flycheck-mode t)))
 
 ;; typescript-mode
-(when (require 'typescript nil t)
-  (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode)))
+(add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
+
+;; web-mode
+(add-hook 'web-mode-hook
+          (lambda()
+            (auto-complete-mode t)))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
 ;; view-mode
 (add-hook 'view-mode-hook
