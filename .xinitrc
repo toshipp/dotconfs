@@ -24,10 +24,10 @@ xset r rate 250 70
 which dropboxd && dropboxd &
 
 # setup im
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-ibus-daemon -drx
+export GTK_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export QT_IM_MODULE=fcitx
+fcitx
 
 # start wm
 exec qtile
