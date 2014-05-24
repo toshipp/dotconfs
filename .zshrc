@@ -201,6 +201,7 @@ esac
 [ -f ${HOME}/.zshrc.mine ] && source ${HOME}/.zshrc.mine
 
 alias emacs='emacs -nw'
+export GOPATH=~/Dev/go/
 
 stty stop undef
 
