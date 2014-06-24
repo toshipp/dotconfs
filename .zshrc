@@ -135,7 +135,7 @@ case "${OSTYPE}" in
         alias ls="ls -G -w"
         ;;
     linux*)
-        alias ls="ls --color"
+        alias ls="ls --color=auto"
         ;;
 esac
 
@@ -199,7 +199,7 @@ esac
 ## load user .zshrc configuration file
 #
 [ -f ${HOME}/.zshrc.mine ] && source ${HOME}/.zshrc.mine
-
+eval $(dircolors)
 alias emacs='emacs -nw'
 export GOPATH=~/Dev/go/
 
