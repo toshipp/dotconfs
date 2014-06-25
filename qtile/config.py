@@ -94,6 +94,7 @@ screens = [
                         widget.CPUGraph(graph_color='18BAEB', fill_color='1667EB.3'),
                         widget.NetGraph(graph_color='00FE81', fill_color='00B25B.3'),
                         widget.HDDBusyGraph(graph_color='ffff00', fill_color='4d4d00'),
+                        widget.Battery(),
                         widget.Clock('%Y-%m-%d %a %I:%M %p'),
                     ],
                     30,
