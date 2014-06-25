@@ -225,6 +225,12 @@
 	    ;;行末のスペースを色づけ
 	    (setq show-trailing-whitespace t)))
 
+;; go-mode
+(require 'go-mode-load)
+(add-hook 'go-mode-hook
+          (lambda ()
+            (auto-complete-mode t)))
+
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
 (setq gdb-many-windows t)
