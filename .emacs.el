@@ -229,6 +229,10 @@
 (require 'go-mode-load)
 (add-hook 'go-mode-hook
           (lambda ()
+            (define-key go-mode-map "\M-p" 'flycheck-previous-error)
+            (define-key go-mode-map "\M-n" 'flycheck-next-error)
+            (define-key go-mode-map "\C-cf" 'flycheck-buffer)
+            (flycheck-mode t)
             (auto-complete-mode t)))
 
 ;;; GDB 関連
