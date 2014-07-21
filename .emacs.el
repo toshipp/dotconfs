@@ -226,7 +226,6 @@
 	    (setq show-trailing-whitespace t)))
 
 ;; go-mode
-(require 'go-mode-load)
 (add-hook 'go-mode-hook
           (lambda ()
             (define-key go-mode-map "\M-p" 'flycheck-previous-error)
