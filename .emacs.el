@@ -1,6 +1,9 @@
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
 ;; package
 (require 'package)
 (add-to-list 'package-archives
