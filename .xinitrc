@@ -30,4 +30,4 @@ export QT_IM_MODULE=fcitx
 fcitx
 
 # start wm
-exec qtile
+exec $1
