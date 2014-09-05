@@ -75,6 +75,13 @@
 (when (require 'undo-tree nil t)
   (global-undo-tree-mode))
 
+;; gtags
+(require 'gtags)
+
+;; uniquifly
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
 ;;矩形編集モード
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
@@ -100,16 +107,16 @@
       (add-to-list 'default-frame-alist '(alpha . 95))
       (cond
        ((eq system-type 'gnu/linux)
-	;; Xのクリップボートをつかう
-	(setq x-select-enable-clipboard t)
-	(set-face-attribute 'default nil
-			    :family "DejaVu Sans Mono"
-			    :height 105)
-	(set-fontset-font (frame-parameter nil 'font)
-			  'japanese-jisx0208
-			  ;; '("Sans" . "iso10646-1")
-			  '("M+ 2m regular" . "iso10646-1")
-			  )))))
+        ;; Xのクリップボートをつかう
+        (setq x-select-enable-clipboard t)
+        (set-face-attribute 'default nil
+                            :family "DejaVu Sans Mono"
+                            :height 105)
+        (set-fontset-font (frame-parameter nil 'font)
+                          'japanese-jisx0208
+                          ;; '("Sans" . "iso10646-1")
+                          '("M+ 2m regular" . "iso10646-1")
+                          )))))
 
 ;;対応する括弧を光らせる
 (show-paren-mode 1)
@@ -127,8 +134,11 @@
 ;;shift + 矢印でウィンドウを移動
 (windmove-default-keybindings)
 
-;; 末尾のスペースを紫
-(set-face-background 'trailing-whitespace "Purple")
+;; whitespace
+(require 'whitespace)
+(global-whitespace-mode)
+(setq whitespace-style '(face tab-mark trailing))
+(set-face-background 'whitespace-trailing "Purple")
 
 ;; linum
 (require 'linum)
@@ -138,69 +148,67 @@
 (eval-after-load "flycheck"
   '(progn
      (flycheck-define-checker c/c++
-       "A C/C++ checker using g++."
-       :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-       :error-patterns  ((error line-start
-                                (file-name) ":" line ":" column ":" " エラー: " (message)
-                                line-end)
-                         (warning line-start
-                                  (file-name) ":" line ":" column ":" " 警告: " (message)
-                                  line-end))
-       :modes (c-mode c++-mode))))
+                              "A C/C++ checker using g++."
+                              :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+                              :error-patterns  ((error line-start
+                                                       (file-name) ":" line ":" column ":" " エラー: " (message)
+                                                       line-end)
+                                                (warning line-start
+                                                         (file-name) ":" line ":" column ":" " 警告: " (message)
+                                                         line-end))
+                              :modes (c-mode c++-mode))))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
           (lambda ()
-	    (require 'js)
-	    (setq js-indent-level 4)
-	    (set (make-local-variable 'indent-line-function) 'js-indent-line)
-	    (setq show-trailing-whitespace t)
-	    (define-key js2-mode-map "\M-n" 'next-error)
-	    (define-key js2-mode-map "\M-p" 'previous-error)))
+            (require 'js)
+            (setq js-indent-level 4)
+            (set (make-local-variable 'indent-line-function) 'js-indent-line)
+            (define-key js2-mode-map "\M-n" 'next-error)
+            (define-key js2-mode-map "\M-p" 'previous-error)))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
-	  '(lambda ()
-	    (define-key c-mode-base-map "\C-cc" 'compile)
-	    (define-key c-mode-base-map "\C-ce" 'next-error)
-	    (define-key c-mode-base-map "\M-p" 'flycheck-previous-error)
-	    (define-key c-mode-base-map "\M-n" 'flycheck-next-error)
-	    (define-key c-mode-base-map "\C-cf" 'flycheck-buffer)
-	    (define-key c-mode-base-map "\M-t" 'ff-find-other-file)
-	    (setq ff-other-file-alist
-		  '(("\\.cc$"  (".hh" ".h"))
-		    ("\\.hh$"  (".cc" ".C"))
-		    ("\\.c$"   (".h"))
-		    ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm" ".cu"))
-		    ("\\.C$"   (".H"  ".hh" ".h"))
-		    ("\\.H$"   (".C"  ".CC"))
-		    ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
-		    ("\\.HH$"  (".CC"))
-		    ("\\.cxx$" (".hh" ".h"))
-		    ("\\.cpp$" (".hpp" ".hh" ".h"))
-		    ("\\.hpp$" (".cpp" ".c"))
-		    ("\\.cu$"  (".h"))))
-	    (setq show-trailing-whitespace t)
-	    (flycheck-mode t)
-	    (flycheck-select-checker 'c/c++)
-	    (auto-complete-mode t)
-	    (c-set-style "k&r")
-	    (setq c-basic-indent 4)
-	    (setq c-basic-offset 4)
-	    (c-toggle-hungry-state 1)))
+          '(lambda ()
+             (define-key c-mode-base-map "\C-cc" 'compile)
+             (define-key c-mode-base-map "\C-ce" 'next-error)
+             (define-key c-mode-base-map "\M-p" 'flycheck-previous-error)
+             (define-key c-mode-base-map "\M-n" 'flycheck-next-error)
+             (define-key c-mode-base-map "\C-cf" 'flycheck-buffer)
+             (define-key c-mode-base-map "\M-t" 'ff-find-other-file)
+             (setq ff-other-file-alist
+                   '(("\\.cc$"  (".hh" ".h"))
+                     ("\\.hh$"  (".cc" ".C"))
+                     ("\\.c$"   (".h"))
+                     ("\\.h$"   (".c" ".cc" ".C" ".CC" ".cxx" ".cpp" ".m" ".mm" ".cu"))
+                     ("\\.C$"   (".H"  ".hh" ".h"))
+                     ("\\.H$"   (".C"  ".CC"))
+                     ("\\.CC$"  (".HH" ".H"  ".hh" ".h"))
+                     ("\\.HH$"  (".CC"))
+                     ("\\.cxx$" (".hh" ".h"))
+                     ("\\.cpp$" (".hpp" ".hh" ".h"))
+                     ("\\.hpp$" (".cpp" ".c"))
+                     ("\\.cu$"  (".h"))))
+             (flycheck-mode t)
+             (gtags-mode 1)
+             (flycheck-select-checker 'c/c++)
+             (auto-complete-mode t)
+             (c-set-style "k&r")
+             (setq c-basic-indent 4)
+             (setq c-basic-offset 4)
+             (c-toggle-hungry-state 1)))
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
 
 ;; python-mode
 (add-hook 'python-mode-hook
-	  (lambda ()
-	    (define-key python-mode-map "\M-p" 'flycheck-previous-error)
-	    (define-key python-mode-map "\M-n" 'flycheck-next-error)
-	    (define-key python-mode-map "\C-cf" 'flycheck-buffer)
-	    (auto-complete-mode t)
-	    (setq show-trailing-whitespace t)
-	    (flycheck-mode t)))
+          (lambda ()
+            (define-key python-mode-map "\M-p" 'flycheck-previous-error)
+            (define-key python-mode-map "\M-n" 'flycheck-next-error)
+            (define-key python-mode-map "\C-cf" 'flycheck-buffer)
+            (auto-complete-mode t)
+            (flycheck-mode t)))
 
 ;; typescript-mode
 (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
@@ -213,20 +221,14 @@
 
 ;; view-mode
 (add-hook 'view-mode-hook
-	  (lambda ()
-	    (define-key view-mode-map "j" 'View-scroll-line-forward)
-	    (define-key view-mode-map "k" 'View-scroll-line-backward)))
+          (lambda ()
+            (define-key view-mode-map "j" 'View-scroll-line-forward)
+            (define-key view-mode-map "k" 'View-scroll-line-backward)))
 
 ;; latex-mode
 (add-hook 'latex-mode-hook
-	  (lambda ()
-	    (define-key latex-mode-map "\C-cc" 'compile)))
-
-;; text-mode
-(add-hook 'text-mode-hook
-	  (lambda ()
-	    ;;行末のスペースを色づけ
-	    (setq show-trailing-whitespace t)))
+          (lambda ()
+            (define-key latex-mode-map "\C-cc" 'compile)))
 
 ;; go-mode
 (add-hook 'go-mode-hook
@@ -243,8 +245,8 @@
 
 ;;; 変数の上にマウスカーソルを置くと値を表示
 (add-hook 'gdb-mode-hook
-	  (lambda ()
-	    (gud-tooltip-mode t)))
+          (lambda ()
+            (gud-tooltip-mode t)))
 
 ;;; I/O バッファを表示
 (setq gdb-use-separate-io-buffer t)
