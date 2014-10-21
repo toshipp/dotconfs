@@ -254,19 +254,5 @@
 ;;; t にすると mini buffer に値が表示される
 (setq gud-tooltip-echo-area nil)
 
-
-(iswitchb-mode 1)
-(defadvice iswitchb-exhibit
-  (after
-   iswitchb-exhibit-with-display-buffer
-   activate)
-  "選択している buffer を window に表示してみる。"
-  (when (and
-         (eq iswitchb-method iswitchb-default-method)
-         iswitchb-matches)
-    (select-window
-     (get-buffer-window (cadr (buffer-list))))
-    (let ((iswitchb-method 'samewindow))
-      (iswitchb-visit-buffer
-       (get-buffer (car iswitchb-matches))))
-    (select-window (minibuffer-window))))
+;; ido-mode
+(ido-mode 1)
