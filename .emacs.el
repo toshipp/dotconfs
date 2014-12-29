@@ -46,6 +46,9 @@
 ;;ctrl-hをdelete
 (global-set-key "\C-h" 'delete-backward-char)
 
+;; bs-show
+(global-set-key "\C-x\C-b"  'bs-show)
+
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
