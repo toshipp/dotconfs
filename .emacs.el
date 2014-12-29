@@ -49,6 +49,10 @@
 ;; bs-show
 (global-set-key "\C-x\C-b"  'bs-show)
 
+;; ido-mode
+(ido-mode 1)
+(setq ido-enable-flex-matching t)
+
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
@@ -106,8 +110,6 @@
     (progn
       ;;スクロールバーは左
       (set-scroll-bar-mode 'left)
-      ;;透過率
-      (add-to-list 'default-frame-alist '(alpha . 95))
       (cond
        ((eq system-type 'gnu/linux)
         ;; Xのクリップボートをつかう
@@ -222,17 +224,6 @@
             (auto-complete-mode t)))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
-;; view-mode
-(add-hook 'view-mode-hook
-          (lambda ()
-            (define-key view-mode-map "j" 'View-scroll-line-forward)
-            (define-key view-mode-map "k" 'View-scroll-line-backward)))
-
-;; latex-mode
-(add-hook 'latex-mode-hook
-          (lambda ()
-            (define-key latex-mode-map "\C-cc" 'compile)))
-
 ;; go-mode
 (add-hook 'go-mode-hook
           (lambda ()
@@ -241,22 +232,3 @@
             (define-key go-mode-map "\C-cf" 'flycheck-buffer)
             (flycheck-mode t)
             (auto-complete-mode t)))
-
-;;; GDB 関連
-;;; 有用なバッファを開くモード
-(setq gdb-many-windows t)
-
-;;; 変数の上にマウスカーソルを置くと値を表示
-(add-hook 'gdb-mode-hook
-          (lambda ()
-            (gud-tooltip-mode t)))
-
-;;; I/O バッファを表示
-(setq gdb-use-separate-io-buffer t)
-
-;;; t にすると mini buffer に値が表示される
-(setq gud-tooltip-echo-area nil)
-
-;; ido-mode
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
