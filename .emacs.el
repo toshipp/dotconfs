@@ -4,6 +4,9 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+;;スタートアップを消す
+(setq inhibit-startup-message t)
+
 ;; package
 (require 'package)
 (add-to-list 'package-archives
@@ -34,20 +37,14 @@
     (dolist (pkg not-installed)
       (package-install pkg))))
 
-;; mozc
-(when (require 'mozc nil t)
-  (setq default-input-method "japanese-mozc")
-  ;; (setq mozc-candidate-style 'overlay)
-  )
-
 ;; input method
-(global-set-key "\C-o" 'toggle-input-method)
+(global-set-key (kbd "C-o") 'toggle-input-method)
 
 ;;ctrl-hをdelete
-(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-h") 'delete-backward-char)
 
 ;; bs-show
-(global-set-key "\C-x\C-b"  'bs-show)
+(global-set-key (kbd "C-x C-b")  'bs-show)
 
 ;; ido-mode
 (ido-mode 1)
@@ -56,13 +53,13 @@
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
-(global-set-key "\C-x\M-f" 'recentf-open-files)
+(global-set-key (kbd "C-x M-f") 'recentf-open-files)
 
 ;; auto-complete
 (eval-after-load "auto-complete"
   '(progn
      (require 'auto-complete-config)
-     (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
      (ac-config-default)
      (setq ac-use-quick-help nil)
      (setq ac-auto-show-menu 0)
@@ -92,9 +89,6 @@
 ;;矩形編集モード
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
-
-;;スタートアップを消す
-(setq inhibit-startup-message t)
 
 ;;カーソル位置の色付け
 (global-hl-line-mode)
@@ -153,15 +147,15 @@
 (eval-after-load "flycheck"
   '(progn
      (flycheck-define-checker c/c++
-                              "A C/C++ checker using g++."
-                              :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-                              :error-patterns  ((error line-start
-                                                       (file-name) ":" line ":" column ":" " エラー: " (message)
-                                                       line-end)
-                                                (warning line-start
-                                                         (file-name) ":" line ":" column ":" " 警告: " (message)
-                                                         line-end))
-                              :modes (c-mode c++-mode))))
+       "A C/C++ checker using g++."
+       :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+       :error-patterns  ((error line-start
+                                (file-name) ":" line ":" column ":" " エラー: " (message)
+                                line-end)
+                         (warning line-start
+                                  (file-name) ":" line ":" column ":" " 警告: " (message)
+                                  line-end))
+       :modes (c-mode c++-mode))))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
@@ -169,19 +163,19 @@
             (require 'js)
             (setq js-indent-level 4)
             (set (make-local-variable 'indent-line-function) 'js-indent-line)
-            (define-key js2-mode-map "\M-n" 'next-error)
-            (define-key js2-mode-map "\M-p" 'previous-error)))
+            (define-key js2-mode-map (kbd "M-n") 'next-error)
+            (define-key js2-mode-map (kbd "M-p") 'previous-error)))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
           '(lambda ()
-             (define-key c-mode-base-map "\C-cc" 'compile)
-             (define-key c-mode-base-map "\C-ce" 'next-error)
-             (define-key c-mode-base-map "\M-p" 'flycheck-previous-error)
-             (define-key c-mode-base-map "\M-n" 'flycheck-next-error)
-             (define-key c-mode-base-map "\C-cf" 'flycheck-buffer)
-             (define-key c-mode-base-map "\M-t" 'ff-find-other-file)
+             (define-key c-mode-base-map (kbd "C-c c") 'compile)
+             (define-key c-mode-base-map (kbd "C-c e") 'next-error)
+             (define-key c-mode-base-map (kbd "M-p") 'flycheck-previous-error)
+             (define-key c-mode-base-map (kbd "M-n") 'flycheck-next-error)
+             (define-key c-mode-base-map (kbd "C-c f") 'flycheck-buffer)
+             (define-key c-mode-base-map (kbd "M-t") 'ff-find-other-file)
              (setq ff-other-file-alist
                    '(("\\.cc$"  (".hh" ".h"))
                      ("\\.hh$"  (".cc" ".C"))
@@ -209,9 +203,9 @@
 ;; python-mode
 (add-hook 'python-mode-hook
           (lambda ()
-            (define-key python-mode-map "\M-p" 'flycheck-previous-error)
-            (define-key python-mode-map "\M-n" 'flycheck-next-error)
-            (define-key python-mode-map "\C-cf" 'flycheck-buffer)
+            (define-key python-mode-map (kbd "M-p") 'flycheck-previous-error)
+            (define-key python-mode-map (kbd "M-n") 'flycheck-next-error)
+            (define-key python-mode-map (kbd "C-c f") 'flycheck-buffer)
             (auto-complete-mode t)
             (flycheck-mode t)))
 
@@ -227,8 +221,8 @@
 ;; go-mode
 (add-hook 'go-mode-hook
           (lambda ()
-            (define-key go-mode-map "\M-p" 'flycheck-previous-error)
-            (define-key go-mode-map "\M-n" 'flycheck-next-error)
-            (define-key go-mode-map "\C-cf" 'flycheck-buffer)
+            (define-key go-mode-map (kbd "M-p") 'flycheck-previous-error)
+            (define-key go-mode-map (kbd "M-n") 'flycheck-next-error)
+            (define-key go-mode-map (kbd "C-c f") 'flycheck-buffer)
             (flycheck-mode t)
             (auto-complete-mode t)))
