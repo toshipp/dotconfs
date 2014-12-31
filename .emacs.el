@@ -157,14 +157,24 @@
                                   line-end))
        :modes (c-mode c++-mode))))
 
+;; prog-mode common setup
+(add-hook 'prog-mode-hook
+          (lambda ()
+            ;; flycheck
+            (flycheck-mode t)
+            (define-key prog-mode-map (kbd "M-n") 'next-error)
+            (define-key prog-mode-map (kbd "M-p") 'previous-error)
+            (define-key prog-mode-map (kbd "C-c f") 'flycheck-buffer)
+
+            ;; auto-complete
+            (auto-complete-mode t)))
+
 ;; js2-mode
 (add-hook 'js2-mode-hook
           (lambda ()
             (require 'js)
             (setq js-indent-level 4)
-            (set (make-local-variable 'indent-line-function) 'js-indent-line)
-            (define-key js2-mode-map (kbd "M-n") 'next-error)
-            (define-key js2-mode-map (kbd "M-p") 'previous-error)))
+            (set (make-local-variable 'indent-line-function) 'js-indent-line)))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;c-mode-hook
@@ -172,9 +182,6 @@
           '(lambda ()
              (define-key c-mode-base-map (kbd "C-c c") 'compile)
              (define-key c-mode-base-map (kbd "C-c e") 'next-error)
-             (define-key c-mode-base-map (kbd "M-p") 'flycheck-previous-error)
-             (define-key c-mode-base-map (kbd "M-n") 'flycheck-next-error)
-             (define-key c-mode-base-map (kbd "C-c f") 'flycheck-buffer)
              (define-key c-mode-base-map (kbd "M-t") 'ff-find-other-file)
              (setq ff-other-file-alist
                    '(("\\.cc$"  (".hh" ".h"))
@@ -189,10 +196,8 @@
                      ("\\.cpp$" (".hpp" ".hh" ".h"))
                      ("\\.hpp$" (".cpp" ".c"))
                      ("\\.cu$"  (".h"))))
-             (flycheck-mode t)
              (gtags-mode 1)
              (flycheck-select-checker 'c/c++)
-             (auto-complete-mode t)
              (c-set-style "k&r")
              (setq c-basic-indent 4)
              (setq c-basic-offset 4)
@@ -200,29 +205,8 @@
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
 
-;; python-mode
-(add-hook 'python-mode-hook
-          (lambda ()
-            (define-key python-mode-map (kbd "M-p") 'flycheck-previous-error)
-            (define-key python-mode-map (kbd "M-n") 'flycheck-next-error)
-            (define-key python-mode-map (kbd "C-c f") 'flycheck-buffer)
-            (auto-complete-mode t)
-            (flycheck-mode t)))
-
 ;; typescript-mode
 (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
 
 ;; web-mode
-(add-hook 'web-mode-hook
-          (lambda()
-            (auto-complete-mode t)))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-
-;; go-mode
-(add-hook 'go-mode-hook
-          (lambda ()
-            (define-key go-mode-map (kbd "M-p") 'flycheck-previous-error)
-            (define-key go-mode-map (kbd "M-n") 'flycheck-next-error)
-            (define-key go-mode-map (kbd "C-c f") 'flycheck-buffer)
-            (flycheck-mode t)
-            (auto-complete-mode t)))
