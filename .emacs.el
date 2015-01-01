@@ -1,6 +1,8 @@
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
+(setq load-prefer-newer t)
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
@@ -18,14 +20,17 @@
   '(
     auto-complete
     flycheck
+    quickrun
+    undo-tree
     go-mode
     js2-mode
     json-mode
     markdown-mode
     tss
-    undo-tree
     web-mode
     yaml-mode
+    rust-mode
+    toml-mode
     ))
 
 ;; auto install
@@ -142,6 +147,8 @@
 ;; linum
 (require 'linum)
 (global-linum-mode)
+
+(require 'quickrun)
 
 ;; flycheck
 (eval-after-load "flycheck"
