@@ -20,6 +20,7 @@
   '(
     auto-complete
     flycheck
+    flycheck-rust
     quickrun
     undo-tree
     go-mode
@@ -50,6 +51,12 @@
 
 ;; bs-show
 (global-set-key (kbd "C-x C-b")  'bs-show)
+
+;; swap RET and C-j when electric-indent-mode is enabled.
+(eval-after-load "electric"
+  '(when electric-indent-mode
+     (global-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
+     (global-set-key (kbd "C-j") 'newline)))
 
 ;; ido-mode
 (ido-mode 1)
@@ -162,7 +169,8 @@
                          (warning line-start
                                   (file-name) ":" line ":" column ":" " 警告: " (message)
                                   line-end))
-       :modes (c-mode c++-mode))))
+       :modes (c-mode c++-mode))
+     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
