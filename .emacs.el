@@ -1,8 +1,13 @@
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
+(setq load-prefer-newer t)
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+
+;;スタートアップを消す
+(setq inhibit-startup-message t)
 
 ;; package
 (require 'package)
@@ -15,14 +20,18 @@
   '(
     auto-complete
     flycheck
+    flycheck-rust
+    quickrun
+    undo-tree
     go-mode
     js2-mode
     json-mode
     markdown-mode
     tss
-    undo-tree
     web-mode
     yaml-mode
+    rust-mode
+    toml-mode
     ))
 
 ;; auto install
@@ -34,28 +43,35 @@
     (dolist (pkg not-installed)
       (package-install pkg))))
 
-;; mozc
-(when (require 'mozc nil t)
-  (setq default-input-method "japanese-mozc")
-  ;; (setq mozc-candidate-style 'overlay)
-  )
-
 ;; input method
-(global-set-key "\C-o" 'toggle-input-method)
+(global-set-key (kbd "C-o") 'toggle-input-method)
 
 ;;ctrl-hをdelete
-(global-set-key "\C-h" 'delete-backward-char)
+(global-set-key (kbd "C-h") 'delete-backward-char)
+
+;; bs-show
+(global-set-key (kbd "C-x C-b")  'bs-show)
+
+;; swap RET and C-j when electric-indent-mode is enabled.
+(eval-after-load "electric"
+  '(when electric-indent-mode
+     (global-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
+     (global-set-key (kbd "C-j") 'newline)))
+
+;; ido-mode
+(ido-mode 1)
+(setq ido-enable-flex-matching t)
 
 ;; このごろ開いたファイルを表示
 (require 'recentf)
 (recentf-mode 1)
-(global-set-key "\C-x\M-f" 'recentf-open-files)
+(global-set-key (kbd "C-x M-f") 'recentf-open-files)
 
 ;; auto-complete
 (eval-after-load "auto-complete"
   '(progn
      (require 'auto-complete-config)
-     (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
      (ac-config-default)
      (setq ac-use-quick-help nil)
      (setq ac-auto-show-menu 0)
@@ -86,9 +102,6 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
-;;スタートアップを消す
-(setq inhibit-startup-message t)
-
 ;;カーソル位置の色付け
 (global-hl-line-mode)
 
@@ -103,8 +116,6 @@
     (progn
       ;;スクロールバーは左
       (set-scroll-bar-mode 'left)
-      ;;透過率
-      (add-to-list 'default-frame-alist '(alpha . 95))
       (cond
        ((eq system-type 'gnu/linux)
         ;; Xのクリップボートをつかう
@@ -144,39 +155,49 @@
 (require 'linum)
 (global-linum-mode)
 
+(require 'quickrun)
+
 ;; flycheck
 (eval-after-load "flycheck"
   '(progn
      (flycheck-define-checker c/c++
-                              "A C/C++ checker using g++."
-                              :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-                              :error-patterns  ((error line-start
-                                                       (file-name) ":" line ":" column ":" " エラー: " (message)
-                                                       line-end)
-                                                (warning line-start
-                                                         (file-name) ":" line ":" column ":" " 警告: " (message)
-                                                         line-end))
-                              :modes (c-mode c++-mode))))
+       "A C/C++ checker using g++."
+       :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+       :error-patterns  ((error line-start
+                                (file-name) ":" line ":" column ":" " エラー: " (message)
+                                line-end)
+                         (warning line-start
+                                  (file-name) ":" line ":" column ":" " 警告: " (message)
+                                  line-end))
+       :modes (c-mode c++-mode))
+     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
+;; prog-mode common setup
+(add-hook 'prog-mode-hook
+          (lambda ()
+            ;; flycheck
+            (flycheck-mode t)
+            (define-key prog-mode-map (kbd "M-n") 'next-error)
+            (define-key prog-mode-map (kbd "M-p") 'previous-error)
+            (define-key prog-mode-map (kbd "C-c f") 'flycheck-buffer)
+
+            ;; auto-complete
+            (auto-complete-mode t)))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
           (lambda ()
             (require 'js)
             (setq js-indent-level 4)
-            (set (make-local-variable 'indent-line-function) 'js-indent-line)
-            (define-key js2-mode-map "\M-n" 'next-error)
-            (define-key js2-mode-map "\M-p" 'previous-error)))
+            (set (make-local-variable 'indent-line-function) 'js-indent-line)))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
           '(lambda ()
-             (define-key c-mode-base-map "\C-cc" 'compile)
-             (define-key c-mode-base-map "\C-ce" 'next-error)
-             (define-key c-mode-base-map "\M-p" 'flycheck-previous-error)
-             (define-key c-mode-base-map "\M-n" 'flycheck-next-error)
-             (define-key c-mode-base-map "\C-cf" 'flycheck-buffer)
-             (define-key c-mode-base-map "\M-t" 'ff-find-other-file)
+             (define-key c-mode-base-map (kbd "C-c c") 'compile)
+             (define-key c-mode-base-map (kbd "C-c e") 'next-error)
+             (define-key c-mode-base-map (kbd "M-t") 'ff-find-other-file)
              (setq ff-other-file-alist
                    '(("\\.cc$"  (".hh" ".h"))
                      ("\\.hh$"  (".cc" ".C"))
@@ -190,10 +211,8 @@
                      ("\\.cpp$" (".hpp" ".hh" ".h"))
                      ("\\.hpp$" (".cpp" ".c"))
                      ("\\.cu$"  (".h"))))
-             (flycheck-mode t)
              (gtags-mode 1)
              (flycheck-select-checker 'c/c++)
-             (auto-complete-mode t)
              (c-set-style "k&r")
              (setq c-basic-indent 4)
              (setq c-basic-offset 4)
@@ -201,64 +220,13 @@
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
 
-;; python-mode
-(add-hook 'python-mode-hook
-          (lambda ()
-            (define-key python-mode-map "\M-p" 'flycheck-previous-error)
-            (define-key python-mode-map "\M-n" 'flycheck-next-error)
-            (define-key python-mode-map "\C-cf" 'flycheck-buffer)
-            (auto-complete-mode t)
-            (flycheck-mode t)))
-
 ;; typescript-mode
 (add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
 
 ;; web-mode
-(add-hook 'web-mode-hook
-          (lambda()
-            (auto-complete-mode t)))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-
-;; view-mode
-(add-hook 'view-mode-hook
-          (lambda ()
-            (define-key view-mode-map "j" 'View-scroll-line-forward)
-            (define-key view-mode-map "k" 'View-scroll-line-backward)))
-
-;; latex-mode
-(add-hook 'latex-mode-hook
-          (lambda ()
-            (define-key latex-mode-map "\C-cc" 'compile)))
-
-;; go-mode
-(add-hook 'go-mode-hook
-          (lambda ()
-            (define-key go-mode-map "\M-p" 'flycheck-previous-error)
-            (define-key go-mode-map "\M-n" 'flycheck-next-error)
-            (define-key go-mode-map "\C-cf" 'flycheck-buffer)
-            (flycheck-mode t)
-            (auto-complete-mode t)))
 
 ;; lua-mode
 (add-hook 'lua-mode-hook
           (lambda ()
             (setq lua-indent-level 4)))
-
-;;; GDB 関連
-;;; 有用なバッファを開くモード
-(setq gdb-many-windows t)
-
-;;; 変数の上にマウスカーソルを置くと値を表示
-(add-hook 'gdb-mode-hook
-          (lambda ()
-            (gud-tooltip-mode t)))
-
-;;; I/O バッファを表示
-(setq gdb-use-separate-io-buffer t)
-
-;;; t にすると mini buffer に値が表示される
-(setq gud-tooltip-echo-area nil)
-
-;; ido-mode
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
