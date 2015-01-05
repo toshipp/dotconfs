@@ -239,6 +239,11 @@
             (flycheck-mode t)
             (auto-complete-mode t)))
 
+;; lua-mode
+(add-hook 'lua-mode-hook
+          (lambda ()
+            (setq lua-indent-level 4)))
+
 ;;; GDB 関連
 ;;; 有用なバッファを開くモード
 (setq gdb-many-windows t)
