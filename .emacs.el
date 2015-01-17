@@ -32,6 +32,8 @@
     yaml-mode
     rust-mode
     toml-mode
+    nginx-mode
+    lua-mode
     ))
 
 ;; auto install
