@@ -177,9 +177,13 @@
           (lambda ()
             ;; flycheck
             (flycheck-mode t)
-            (define-key prog-mode-map (kbd "M-n") 'next-error)
-            (define-key prog-mode-map (kbd "M-p") 'previous-error)
+            (define-key prog-mode-map (kbd "M-n") 'flycheck-next-error)
+            (define-key prog-mode-map (kbd "M-p") 'flycheck-previous-error)
             (define-key prog-mode-map (kbd "C-c f") 'flycheck-buffer)
+
+            ;; simple
+            (define-key prog-mode-map (kbd "M-N") 'next-error)
+            (define-key prog-mode-map (kbd "M-P") 'previous-error)
 
             ;; auto-complete
             (auto-complete-mode t)))
