@@ -229,3 +229,8 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+
+;; lua-mode
+(add-hook 'lua-mode-hook
+          (lambda ()
+            (setq lua-indent-level 4)))
