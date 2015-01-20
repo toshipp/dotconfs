@@ -18,6 +18,7 @@
 (require 'cl)
 (defvar installing-package-list
   '(
+    helm
     auto-complete
     flycheck
     flycheck-rust
@@ -51,9 +52,6 @@
 ;;ctrl-hをdelete
 (global-set-key (kbd "C-h") 'delete-backward-char)
 
-;; bs-show
-(global-set-key (kbd "C-x C-b")  'bs-show)
-
 ;; swap RET and C-j when electric-indent-mode is enabled.
 (eval-after-load "electric"
   '(when electric-indent-mode
@@ -64,10 +62,21 @@
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
 
-;; このごろ開いたファイルを表示
-(require 'recentf)
-(recentf-mode 1)
-(global-set-key (kbd "C-x M-f") 'recentf-open-files)
+;; helm
+(when (require 'helm-config nil t)
+  (require 'helm)
+  (setq helm-split-window-in-side-p t
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t)
+  (define-key helm-map (kbd "C-h") 'delete-backward-char)
+  (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+  (global-set-key (kbd "C-x M-f") 'helm-recentf)
+  (global-set-key (kbd "M-s o") 'helm-occur)
+  (global-set-key (kbd "M-s i") 'helm-imenu)
+  )
 
 ;; auto-complete
 (eval-after-load "auto-complete"
