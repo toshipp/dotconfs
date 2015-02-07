@@ -181,7 +181,10 @@
                                   (file-name) ":" line ":" column ":" " 警告: " (message)
                                   line-end))
        :modes (c-mode c++-mode))
-     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
+     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+
+     (custom-set-variables '(flycheck-checker-error-threshold nil))))
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
