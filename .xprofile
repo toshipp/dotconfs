@@ -10,9 +10,6 @@ xsetroot -cursor_name left_ptr
 # set key repeat
 xset r rate 250 70
 
-# run dropbox if exist
-which dropboxd && dropboxd &
-
 # setup im
 export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
