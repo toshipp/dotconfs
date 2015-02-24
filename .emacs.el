@@ -87,6 +87,7 @@
 
 ;; helm-ls-git
 (when (require 'helm-ls-git nil t)
+  (setq helm-ls-git-fuzzy-match t)
   (global-set-key (kbd "C-x C-d") 'helm-browse-project))
 
 ;; auto-complete
