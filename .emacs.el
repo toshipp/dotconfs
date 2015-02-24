@@ -9,6 +9,8 @@
 ;;スタートアップを消す
 (setq inhibit-startup-message t)
 
+(require 'eieio)
+
 ;; package
 (require 'package)
 (add-to-list 'package-archives
@@ -19,6 +21,7 @@
 (defvar installing-package-list
   '(
     helm
+    helm-ls-git
     auto-complete
     flycheck
     flycheck-rust
@@ -49,6 +52,10 @@
 ;; input method
 (global-set-key (kbd "C-o") 'toggle-input-method)
 
+;; mozc
+(when (require 'mozc nil t)
+  (setq default-input-method "japanese-mozc"))
+
 ;;ctrl-hをdelete
 (global-set-key (kbd "C-h") 'delete-backward-char)
 
@@ -77,6 +84,10 @@
   (global-set-key (kbd "M-s o") 'helm-occur)
   (global-set-key (kbd "M-s i") 'helm-imenu)
   )
+
+;; helm-ls-git
+(when (require 'helm-ls-git nil t)
+  (global-set-key (kbd "C-x C-d") 'helm-browse-project))
 
 ;; auto-complete
 (eval-after-load "auto-complete"
