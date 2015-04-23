@@ -260,3 +260,8 @@
 (add-hook 'lua-mode-hook
           (lambda ()
             (setq lua-indent-level 4)))
+
+;; go-mode
+(when (executable-find "goimports")
+  (setq gofmt-command "goimports"))
+(add-hook 'before-save-hook 'gofmt-before-save)
