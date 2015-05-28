@@ -115,7 +115,7 @@
   (global-undo-tree-mode))
 
 ;; gtags
-(autoload 'gtags "gtags" nil t)
+(autoload 'gtags-mode "gtags" nil t)
 
 ;; uniquifly
 (require 'uniquify)
