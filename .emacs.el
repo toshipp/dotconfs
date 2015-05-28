@@ -60,8 +60,8 @@
 (global-set-key (kbd "C-h") 'delete-backward-char)
 
 ;; swap RET and C-j when electric-indent-mode is enabled.
-(eval-after-load "electric"
-  '(when electric-indent-mode
+(with-eval-after-load "electric"
+  (when electric-indent-mode
      (global-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
      (global-set-key (kbd "C-j") 'newline)))
 
@@ -91,14 +91,13 @@
   (global-set-key (kbd "C-x C-d") 'helm-browse-project))
 
 ;; auto-complete
-(eval-after-load "auto-complete"
-  '(progn
-     (require 'auto-complete-config)
-     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-     (ac-config-default)
-     (setq ac-use-quick-help nil)
-     (setq ac-auto-show-menu 0)
-     (setq ac-auto-start 2)))
+(with-eval-after-load "auto-complete"
+  (require 'auto-complete-config)
+  (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+  (ac-config-default)
+  (setq ac-use-quick-help nil)
+  (setq ac-auto-show-menu 0)
+  (setq ac-auto-start 2))
 
 ;; migemo
 (when (require 'migemo nil t)
@@ -181,22 +180,21 @@
 (require 'quickrun)
 
 ;; flycheck
-(eval-after-load "flycheck"
-  '(progn
-     (flycheck-define-checker c/c++
-       "A C/C++ checker using g++."
-       :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-       :error-patterns  ((error line-start
-                                (file-name) ":" line ":" column ":" " エラー: " (message)
-                                line-end)
-                         (warning line-start
-                                  (file-name) ":" line ":" column ":" " 警告: " (message)
-                                  line-end))
-       :modes (c-mode c++-mode))
+(with-eval-after-load "flycheck"
+  (flycheck-define-checker c/c++
+    "A C/C++ checker using g++."
+    :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
+    :error-patterns  ((error line-start
+                             (file-name) ":" line ":" column ":" " エラー: " (message)
+                             line-end)
+                      (warning line-start
+                               (file-name) ":" line ":" column ":" " 警告: " (message)
+                               line-end))
+    :modes (c-mode c++-mode))
 
-     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 
-     (custom-set-variables '(flycheck-checker-error-threshold nil))))
+  (custom-set-variables '(flycheck-checker-error-threshold nil)))
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
