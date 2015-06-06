@@ -115,6 +115,7 @@
 
 ;; gtags
 (autoload 'gtags-mode "gtags" nil t)
+(setq gtags-suggested-key-mapping t)
 
 ;; uniquifly
 (require 'uniquify)
