@@ -210,6 +210,10 @@
             (define-key prog-mode-map (kbd "M-N") 'next-error)
             (define-key prog-mode-map (kbd "M-P") 'previous-error)
 
+            ;; tag find
+            (define-key prog-mode-map (kbd "M-.") 'helm-etags-select)
+            (define-key prog-mode-map (kbd "M-*") 'xref-pop-marker-stack)
+
             ;; auto-complete
             (auto-complete-mode t)))
 
