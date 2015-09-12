@@ -65,6 +65,9 @@
      (global-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
      (global-set-key (kbd "C-j") 'newline)))
 
+;; recentf
+(require 'recentf)
+
 ;; ido-mode
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
