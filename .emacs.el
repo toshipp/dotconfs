@@ -22,7 +22,7 @@
   '(
     helm
     helm-ls-git
-    auto-complete
+    company
     flycheck
     flycheck-rust
     quickrun
@@ -31,7 +31,6 @@
     js2-mode
     json-mode
     markdown-mode
-    tss
     web-mode
     yaml-mode
     rust-mode
@@ -93,14 +92,13 @@
   (setq helm-ls-git-fuzzy-match t)
   (global-set-key (kbd "C-x C-d") 'helm-browse-project))
 
-;; auto-complete
-(with-eval-after-load "auto-complete"
-  (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-  (ac-config-default)
-  (setq ac-use-quick-help nil)
-  (setq ac-auto-show-menu 0)
-  (setq ac-auto-start 2))
+(when (require 'company nil t)
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 2)
+  ;; todo
+  (setq company-backends (remove 'company-capf company-backends))
+  )
 
 ;; migemo
 (when (require 'migemo nil t)
@@ -216,9 +214,7 @@
             ;; tag find
             (define-key prog-mode-map (kbd "M-.") 'helm-etags-select)
             (define-key prog-mode-map (kbd "M-*") 'xref-pop-marker-stack)
-
-            ;; auto-complete
-            (auto-complete-mode t)))
+            ))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
