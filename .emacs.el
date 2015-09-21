@@ -93,7 +93,7 @@
   (global-set-key (kbd "C-x C-d") 'helm-browse-project))
 
 (when (require 'company nil t)
-  (add-hook 'after-init-hook 'global-company-mode)
+  (global-company-mode)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
   ;; todo
