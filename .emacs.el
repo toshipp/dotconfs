@@ -70,6 +70,7 @@
 ;; ido-mode
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
+(setq ido-auto-merge-work-directories-length -1)
 
 ;; helm
 (when (require 'helm-config nil t)
@@ -98,6 +99,8 @@
   (setq company-minimum-prefix-length 2)
   ;; todo
   (setq company-backends (remove 'company-capf company-backends))
+  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   )
 
 ;; migemo
@@ -213,7 +216,7 @@
 
             ;; tag find
             (define-key prog-mode-map (kbd "M-.") 'helm-etags-select)
-            (define-key prog-mode-map (kbd "M-*") 'xref-pop-marker-stack)
+            (define-key prog-mode-map (kbd "M-*") 'pop-tag-mark)
             ))
 
 ;; js2-mode
