@@ -10,6 +10,10 @@ xsetroot -cursor_name left_ptr
 # set key repeat
 xset r rate 250 70
 
+# for sway
+export XKB_DEFAULT_LAYOUT=jp
+export XKB_DEFAULT_OPTIONS=ctrl:swapcaps
+
 # setup im
 export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
