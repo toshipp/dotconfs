@@ -20,8 +20,9 @@
 (require 'cl)
 (defvar installing-package-list
   '(
+    projectile
     helm
-    helm-ls-git
+    helm-projectile
     company
     flycheck
     flycheck-rust
@@ -88,10 +89,9 @@
   (global-set-key (kbd "M-s i") 'helm-imenu)
   )
 
-;; helm-ls-git
-(when (require 'helm-ls-git nil t)
-  (setq helm-ls-git-fuzzy-match t)
-  (global-set-key (kbd "C-x C-d") 'helm-browse-project))
+;; helm-projectile
+(when (require 'helm-projectile nil t)
+  (global-set-key (kbd "C-x C-d") 'helm-projectile))
 
 (when (require 'company nil t)
   (global-company-mode)
@@ -185,31 +185,18 @@
 (require 'quickrun)
 
 ;; flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(define-key flycheck-mode-map (kbd "M-n") 'flycheck-next-error)
+(define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error)
+(define-key flycheck-mode-map (kbd "C-c f") 'flycheck-buffer)
 (with-eval-after-load "flycheck"
-  (flycheck-define-checker c/c++
-    "A C/C++ checker using g++."
-    :command ("g++" "-std=c++0x" "-Wall" "-Wextra" "-fsyntax-only" "-fmax-errors=20" source)
-    :error-patterns  ((error line-start
-                             (file-name) ":" line ":" column ":" " エラー: " (message)
-                             line-end)
-                      (warning line-start
-                               (file-name) ":" line ":" column ":" " 警告: " (message)
-                               line-end))
-    :modes (c-mode c++-mode))
-
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-
   (custom-set-variables '(flycheck-checker-error-threshold nil)))
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
           (lambda ()
-            ;; flycheck
-            (flycheck-mode t)
-            (define-key prog-mode-map (kbd "M-n") 'flycheck-next-error)
-            (define-key prog-mode-map (kbd "M-p") 'flycheck-previous-error)
-            (define-key prog-mode-map (kbd "C-c f") 'flycheck-buffer)
-
             ;; simple
             (define-key prog-mode-map (kbd "M-N") 'next-error)
             (define-key prog-mode-map (kbd "M-P") 'previous-error)
@@ -247,7 +234,6 @@
                      ("\\.hpp$" (".cpp" ".c"))
                      ("\\.cu$"  (".h"))))
              (gtags-mode 1)
-             (flycheck-select-checker 'c/c++)
              (c-set-style "k&r")
              (setq c-basic-indent 4)
              (setq c-basic-offset 4)
