@@ -13,8 +13,8 @@
 
 ;; package
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+(push '("melpa" . "https://melpa.org/packages/")
+      package-archives)
 (package-initialize)
 
 (require 'cl)
@@ -212,7 +212,7 @@
             (require 'js)
             (setq js-indent-level 4)
             (set (make-local-variable 'indent-line-function) 'js-indent-line)))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(push '("\\.js\\'" . js2-mode) auto-mode-alist)
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
@@ -238,14 +238,14 @@
              (setq c-basic-indent 4)
              (setq c-basic-offset 4)
              (c-toggle-hungry-state 1)))
-(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cu$" . c++-mode))
+(push '("\\.h$" . c++-mode) auto-mode-alist)
+(push '("\\.cu$" . c++-mode) auto-mode-alist)
 
 ;; typescript-mode
-(add-to-list 'auto-mode-alist '("\\.ts" . typescript-mode))
+(push '("\\.ts" . typescript-mode) auto-mode-alist)
 
 ;; web-mode
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(push '("\\.html\\'" . web-mode) auto-mode-alist)
 
 ;; lua-mode
 (add-hook 'lua-mode-hook
