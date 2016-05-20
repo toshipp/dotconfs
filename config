@@ -31,7 +31,7 @@ bindsym $mod+Return exec i3-sensible-terminal
 
 # launch shortcut 
 bindsym $mod+c exec google-chrome-stable
-bindsym $mod+n exec nemo
+bindsym $mod+n exec nautilus
 bindsym $mod+m exec emacs
 bindsym $mod+p exec bomi
 bindsym $mod+o exec i3lock
