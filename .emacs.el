@@ -9,20 +9,19 @@
 ;;スタートアップを消す
 (setq inhibit-startup-message t)
 
-(require 'eieio)
-
 ;; package
 (require 'package)
 (push '("melpa" . "https://melpa.org/packages/")
       package-archives)
 (package-initialize)
 
-(require 'cl)
+(require 'cl-lib)
 (defvar installing-package-list
   '(
     projectile
     helm
     helm-projectile
+    helm-gtags
     company
     flycheck
     flycheck-rust
@@ -41,9 +40,9 @@
     ))
 
 ;; auto install
-(let ((not-installed (loop for x in installing-package-list
-                           when (not (package-installed-p x))
-                           collect x)))
+(let ((not-installed (cl-loop for x in installing-package-list
+                              when (not (package-installed-p x))
+                              collect x)))
   (when not-installed
     (package-refresh-contents)
     (dolist (pkg not-installed)
@@ -117,9 +116,8 @@
 (when (require 'undo-tree nil t)
   (global-undo-tree-mode))
 
-;; gtags
-(autoload 'gtags-mode "gtags" nil t)
-(setq gtags-suggested-key-mapping t)
+;; helm-gtags
+(custom-set-variables '(helm-gtags-pulse-at-cursor nil))
 
 ;; uniquifly
 (require 'uniquify)
@@ -202,8 +200,9 @@
             (define-key prog-mode-map (kbd "M-P") 'previous-error)
 
             ;; tag find
-            (define-key prog-mode-map (kbd "M-.") 'helm-etags-select)
-            (define-key prog-mode-map (kbd "M-*") 'pop-tag-mark)
+            (helm-gtags-mode 1)
+            (define-key prog-mode-map (kbd "M-.") 'helm-gtags-find-tag)
+            (define-key prog-mode-map (kbd "M-*") 'helm-gtags-pop-stack)
             ))
 
 ;; js2-mode
@@ -233,7 +232,6 @@
                      ("\\.cpp$" (".hpp" ".hh" ".h"))
                      ("\\.hpp$" (".cpp" ".c"))
                      ("\\.cu$"  (".h"))))
-             (gtags-mode 1)
              (c-set-style "k&r")
              (setq c-basic-indent 4)
              (setq c-basic-offset 4)
