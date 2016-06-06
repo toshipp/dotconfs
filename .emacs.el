@@ -118,6 +118,9 @@
 
 ;; helm-gtags
 (custom-set-variables '(helm-gtags-pulse-at-cursor nil))
+(with-eval-after-load "helm-gtags"
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-find-tag)
+  (define-key helm-gtags-mode-map (kbd "M-*") 'helm-gtags-pop-stack))
 
 ;; uniquifly
 (require 'uniquify)
@@ -201,8 +204,6 @@
 
             ;; tag find
             (helm-gtags-mode 1)
-            (define-key prog-mode-map (kbd "M-.") 'helm-gtags-find-tag)
-            (define-key prog-mode-map (kbd "M-*") 'helm-gtags-pop-stack)
             ))
 
 ;; js2-mode
