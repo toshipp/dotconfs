@@ -69,8 +69,8 @@
 
 ;; ido-mode
 (ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-auto-merge-work-directories-length -1)
+(custom-set-variables '(ido-enable-flex-matching t))
+(custom-set-variables '(ido-auto-merge-work-directories-length -1))
 
 ;; helm
 (when (require 'helm-config nil t)
@@ -128,7 +128,7 @@
 
 ;;矩形編集モード
 (cua-mode t)
-(setq cua-enable-cua-keys nil)
+(custom-set-variables '(cua-enable-cua-keys nil))
 
 ;;カーソル位置の色付け
 (global-hl-line-mode)
@@ -255,3 +255,9 @@
 (when (executable-find "goimports")
   (setq gofmt-command "goimports"))
 (add-hook 'before-save-hook 'gofmt-before-save)
+
+;; my interactives
+(defun use-local-bin ()
+  (interactive)
+  (set (make-local-variable 'exec-path)
+       (cons "~/.local/bin" exec-path)))
