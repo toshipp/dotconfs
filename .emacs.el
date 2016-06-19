@@ -153,7 +153,6 @@
                             :height 105)
         (set-fontset-font (frame-parameter nil 'font)
                           'japanese-jisx0208
-                          ;; '("Sans" . "iso10646-1")
                           '("M+ 2m regular" . "iso10646-1")
                           )))))
 
@@ -239,9 +238,6 @@
              (c-toggle-hungry-state 1)))
 (push '("\\.h$" . c++-mode) auto-mode-alist)
 (push '("\\.cu$" . c++-mode) auto-mode-alist)
-
-;; typescript-mode
-(push '("\\.ts" . typescript-mode) auto-mode-alist)
 
 ;; web-mode
 (push '("\\.html\\'" . web-mode) auto-mode-alist)
