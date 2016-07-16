@@ -11,10 +11,13 @@ xsetroot -cursor_name left_ptr
 xset r rate 250 70
 
 # for sway
-export XKB_DEFAULT_LAYOUT=jp
-export XKB_DEFAULT_OPTIONS=ctrl:swapcaps
+#export XKB_DEFAULT_LAYOUT=jp
+#export XKB_DEFAULT_OPTIONS=ctrl:swapcaps
 
-feh --bg-max /home/toshi/Dropbox/back.jpg
+feh --bg-max /home/toshi/Dropbox/back.jpg || true
+
+# tap to click
+synclient TapButton1=1 || true
 
 # setup im
 export GTK_IM_MODULE=fcitx
