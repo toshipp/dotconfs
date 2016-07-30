@@ -1,0 +1,9 @@
+[Unit]
+Description=disable keypad wakeup
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "awk '/^EHC.*enabled/{print $1}' /proc/acpi/wakeup|dd of=/proc/acpi/wakeup"
+
+[Install]
+WantedBy=multi-user.target
