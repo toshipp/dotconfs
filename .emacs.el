@@ -205,6 +205,9 @@
             (helm-gtags-mode 1)
             ))
 
+;; rust-mode
+(custom-set-variables '(rust-format-on-save t))
+
 ;; js2-mode
 (add-hook 'js2-mode-hook
           (lambda ()

@@ -4,6 +4,9 @@
 #
 # Executed by startx (run your window manager from here)
 
+# PATH
+export PATH=$HOME/.cargo/bin/:${PATH}
+
 # set cursor
 xsetroot -cursor_name left_ptr
 
