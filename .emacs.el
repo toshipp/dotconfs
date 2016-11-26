@@ -37,6 +37,7 @@
     toml-mode
     nginx-mode
     lua-mode
+    migemo
     ))
 
 ;; auto install
