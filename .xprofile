@@ -20,7 +20,7 @@ xset r rate 250 70
 feh --bg-max /home/toshi/Dropbox/back.jpg || true
 
 # tap to click
-synclient TapButton1=1 || true
+# synclient TapButton1=1 || true
 
 # setup im
 export GTK_IM_MODULE=fcitx

@@ -70,8 +70,6 @@
 
 ;; ido-mode
 (ido-mode 1)
-(custom-set-variables '(ido-enable-flex-matching t))
-(custom-set-variables '(ido-auto-merge-work-directories-length -1))
 
 ;; helm
 (when (require 'helm-config nil t)
@@ -118,7 +116,6 @@
   (global-undo-tree-mode))
 
 ;; helm-gtags
-(custom-set-variables '(helm-gtags-pulse-at-cursor nil))
 (with-eval-after-load "helm-gtags"
   (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-find-tag)
   (define-key helm-gtags-mode-map (kbd "M-*") 'helm-gtags-pop-stack))
@@ -129,7 +126,6 @@
 
 ;;矩形編集モード
 (cua-mode t)
-(custom-set-variables '(cua-enable-cua-keys nil))
 
 ;;カーソル位置の色付け
 (global-hl-line-mode)
@@ -192,8 +188,7 @@
 (define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-c f") 'flycheck-buffer)
 (with-eval-after-load "flycheck"
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-  (custom-set-variables '(flycheck-checker-error-threshold nil)))
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
@@ -205,9 +200,6 @@
             ;; tag find
             (helm-gtags-mode 1)
             ))
-
-;; rust-mode
-(custom-set-variables '(rust-format-on-save t))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
@@ -261,3 +253,26 @@
   (interactive)
   (set (make-local-variable 'exec-path)
        (cons "~/.local/bin" exec-path)))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(cua-enable-cua-keys nil)
+ '(flycheck-checker-error-threshold nil)
+ '(helm-gtags-pulse-at-cursor nil)
+ '(ido-auto-merge-work-directories-length -1)
+ '(ido-enable-flex-matching t)
+ '(package-selected-packages
+   (quote
+    (yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode flycheck-rust company)))
+ '(rust-format-on-save t)
+ '(flycheck-checker-error-threshold nil))
