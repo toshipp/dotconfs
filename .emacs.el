@@ -274,5 +274,4 @@
  '(package-selected-packages
    (quote
     (yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode flycheck-rust company)))
- '(rust-format-on-save t)
- '(flycheck-checker-error-threshold nil))
+ '(rust-format-on-save t))
