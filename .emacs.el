@@ -95,6 +95,7 @@
   (global-company-mode)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
+  (setq company-dabbrev-downcase nil)
   ;; todo
   (setq company-backends (remove 'company-capf company-backends))
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
