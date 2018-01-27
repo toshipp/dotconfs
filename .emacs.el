@@ -151,7 +151,7 @@
                             :height 105)
         (set-fontset-font (frame-parameter nil 'font)
                           'japanese-jisx0208
-                          '("M+ 2m regular" . "iso10646-1")
+                          '("M+ 2m" . "iso10646-1")
                           )))))
 
 ;;対応する括弧を光らせる
