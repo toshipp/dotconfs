@@ -234,6 +234,7 @@
              (c-toggle-hungry-state 1)))
 (push '("\\.h$" . c++-mode) auto-mode-alist)
 (push '("\\.cu$" . c++-mode) auto-mode-alist)
+(push '("\\.ic$" . c++-mode) auto-mode-alist)
 
 ;; web-mode
 (push '("\\.html\\'" . web-mode) auto-mode-alist)
