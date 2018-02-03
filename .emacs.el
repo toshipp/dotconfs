@@ -95,6 +95,7 @@
   (global-company-mode)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
+  (setq company-dabbrev-downcase nil)
   ;; todo
   (setq company-backends (remove 'company-capf company-backends))
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
@@ -150,7 +151,7 @@
                             :height 105)
         (set-fontset-font (frame-parameter nil 'font)
                           'japanese-jisx0208
-                          '("M+ 2m regular" . "iso10646-1")
+                          '("M+ 2m" . "iso10646-1")
                           )))))
 
 ;;対応する括弧を光らせる
