@@ -28,6 +28,7 @@
     quickrun
     undo-tree
     go-mode
+    company-go
     js2-mode
     json-mode
     markdown-mode
@@ -249,6 +250,14 @@
 (when (executable-find "goimports")
   (setq gofmt-command "goimports"))
 (add-hook 'before-save-hook 'gofmt-before-save)
+(require 'company-go)
+(add-hook 'go-mode-hook (lambda ()
+                          (set (make-local-variable 'company-backends)
+                               '(company-go))
+                          (company-mode)
+                          (helm-gtags-mode 0)
+                          (define-key go-mode-map (kbd "M-.") 'godef-jump)
+                          (define-key go-mode-map (kbd "M-*") 'pop-tag-mark)))
 
 ;; my interactives
 (defun use-local-bin ()
