@@ -18,13 +18,13 @@
 (require 'cl-lib)
 (defvar installing-package-list
   '(
+    eglot
     projectile
     helm
     helm-projectile
     helm-gtags
     company
     flycheck
-    flycheck-rust
     quickrun
     undo-tree
     go-mode
@@ -97,8 +97,6 @@
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
   (setq company-dabbrev-downcase nil)
-  ;; todo
-  (setq company-backends (remove 'company-capf company-backends))
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   )
@@ -189,8 +187,11 @@
 (define-key flycheck-mode-map (kbd "M-n") 'flycheck-next-error)
 (define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-c f") 'flycheck-buffer)
-(with-eval-after-load "flycheck"
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+;; flymake
+(require 'flymake)
+(define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
+(define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
@@ -202,6 +203,15 @@
             ;; tag find
             (helm-gtags-mode 1)
             ))
+
+;; rust-mode
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (require 'eglot)
+            (eglot-ensure)
+            (flycheck-mode 0)
+            (helm-gtags-mode 0)
+            (flymake-mode 1)))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
@@ -284,5 +294,5 @@
  '(ido-enable-flex-matching t)
  '(package-selected-packages
    (quote
-    (php-mode yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode flycheck-rust company)))
+    (eglot php-mode yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode company)))
  '(rust-format-on-save t))
