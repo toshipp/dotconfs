@@ -206,7 +206,7 @@ export GOPATH=~/Dev/go/
 stty stop undef
 
 if which tmux 2>&1 >/dev/null; then
-    if [ -z "$TMUX" ]; then
+    if [ "$TERM" != linux ] && [ -z "$TMUX" ]; then
         if tmux ls 2>/dev/null | grep -q -v attached; then
             exec tmux attach
         else
