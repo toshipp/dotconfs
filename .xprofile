@@ -3,6 +3,10 @@
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
+if grep -q "XPS 13" /sys/devices/virtual/dmi/id/product_name; then
+  xrandr --dpi 224
+  export GDK_DPI_SCALE=2
+fi
 
 # PATH
 export PATH=$HOME/.cargo/bin/:${PATH}
