@@ -3,15 +3,16 @@
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
+
+export PATH=$HOME/.cargo/bin/:${PATH}
+
+export TERMINAL=alacritty
+
 if grep -q "XPS 13" /sys/devices/virtual/dmi/id/product_name; then
   xrandr --dpi 224
   export GDK_DPI_SCALE=2
+  export TERMINAL=urxvt
 fi
-
-# PATH
-export PATH=$HOME/.cargo/bin/:${PATH}
-
-export TERMINAL=/usr/sbin/alacritty
 
 # set cursor
 xsetroot -cursor_name left_ptr
