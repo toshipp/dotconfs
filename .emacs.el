@@ -193,6 +193,11 @@
 (define-key flymake-mode-map (kbd "M-n") 'flymake-goto-next-error)
 (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
+;; eglot
+(require 'eglot)
+(setf (alist-get 'go-mode eglot-server-programs)
+      '("bingo"))
+
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
           (lambda ()
@@ -264,10 +269,9 @@
 (add-hook 'go-mode-hook (lambda ()
                           (set (make-local-variable 'company-backends)
                                '(company-go))
+                          (eglot-ensure)
                           (company-mode)
-                          (helm-gtags-mode 0)
-                          (define-key go-mode-map (kbd "M-.") 'godef-jump)
-                          (define-key go-mode-map (kbd "M-*") 'pop-tag-mark)))
+                          (helm-gtags-mode 0)))
 
 ;; my interactives
 (defun use-local-bin ()
