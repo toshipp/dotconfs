@@ -188,6 +188,7 @@
 (define-key flycheck-mode-map (kbd "M-n") 'flycheck-next-error)
 (define-key flycheck-mode-map (kbd "M-p") 'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-c f") 'flycheck-buffer)
+(flycheck-add-next-checker 'python-pylint 'python-mypy)
 
 ;; flymake
 (require 'flymake)
@@ -226,6 +227,13 @@
             (setq js-indent-level 4)
             (set (make-local-variable 'indent-line-function) 'js-indent-line)))
 (push '("\\.js\\'" . js2-mode) auto-mode-alist)
+
+;; python-mode
+(add-hook 'python-mode-hook
+          (lambda ()
+            (require 'eglot)
+            (eglot-ensure)
+            (helm-gtags-mode 0)))
 
 ;;c-mode-hook
 (add-hook 'c-mode-common-hook
