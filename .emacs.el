@@ -339,6 +339,10 @@ See: `https://github.com/joaotavora/eglot'."
   (set (make-local-variable 'exec-path)
        (cons "~/.local/bin" exec-path)))
 
+;; gpg
+;; temporary fix. need investigation.
+(setq epa-pinentry-mode 'loopback)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
