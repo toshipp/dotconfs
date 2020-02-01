@@ -12,6 +12,9 @@ if grep -q "XPS 13" /sys/devices/virtual/dmi/id/product_name; then
   xrandr --dpi 224
   export GDK_DPI_SCALE=2
   export TERMINAL=urxvt
+else
+  xrandr --dpi 140
+  export GDK_DPI_SCALE=1.5
 fi
 
 # set cursor
