@@ -25,6 +25,7 @@
     helm-gtags
     company
     flycheck
+    flycheck-rust
     quickrun
     undo-tree
     go-mode
@@ -214,9 +215,9 @@
           (lambda ()
             (require 'eglot)
             (eglot-ensure)
-            (flycheck-mode 0)
-            (helm-gtags-mode 0)
-            (flymake-mode 1)))
+            (helm-gtags-mode 0)))
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 ;; js2-mode
 (add-hook 'js2-mode-hook
