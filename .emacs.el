@@ -200,6 +200,57 @@
 (setf (alist-get 'go-mode eglot-server-programs)
       '("bingo"))
 
+(add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+
+(defun flycheck-eglot-start (checker callback)
+  "Run a check with CHECKER and pass the status onto CALLBACK."
+  (cl-labels
+      ((flymake-diag->flycheck-err
+        (diag)
+        (pcase-let ((`(,line . ,column)
+                     (with-current-buffer (flymake-diagnostic-buffer diag)
+                       (save-excursion
+                         (goto-char (flymake-diagnostic-beg diag))
+                         (cons (line-number-at-pos)
+                               (- (point)
+                                  (line-beginning-position)))))))
+          (flycheck-error-new-at
+           line column
+           (pcase (flymake-diagnostic-type diag)
+             (`eglot-note    'info)
+             (`eglot-warning 'warning)
+             (`eglot-error   'error))
+           (flymake-diagnostic-text diag)
+           :checker checker))))
+    (eglot-flymake-backend (lambda (report-fn &rest _)
+                             (funcall callback 'finished (mapcar #'flymake-diag->flycheck-err report-fn))))))
+
+;; from emacs 27
+(defun flatten-tree (tree)
+  "Return a \"flattened\" copy of TREE.
+In other words, return a list of the non-nil terminal nodes, or
+leaves, of the tree of cons cells rooted at TREE.  Leaves in the
+returned list are in the same order as in TREE.
+\(flatten-tree \\='(1 (2 . 3) nil (4 5 (6)) 7))
+=> (1 2 3 4 5 6 7)"
+  (let (elems)
+    (while (consp tree)
+      (let ((elem (pop tree)))
+        (while (consp elem)
+          (push (cdr elem) tree)
+          (setq elem (car elem)))
+        (if elem (push elem elems))))
+    (if tree (push tree elems))
+    (nreverse elems)))
+
+(flycheck-define-generic-checker 'eglot
+  "Syntax checker using eglot.
+
+See: `https://github.com/joaotavora/eglot'."
+  :start #'flycheck-eglot-start
+  :predicate (bound-and-true-p eglot--managed-mode)
+  :modes (flatten-tree (mapcar 'car eglot-server-programs)))
+
 ;; prog-mode common setup
 (add-hook 'prog-mode-hook
           (lambda ()
