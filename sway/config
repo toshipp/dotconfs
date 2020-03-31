@@ -16,7 +16,7 @@ set $right l
 # Your preferred terminal emulator
 set $term alacritty
 # Your preferred application launcher
-set $menu dmenu_run
+set $menu bemenu-run
 
 ### Output configuration
 #
@@ -28,6 +28,22 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+
+### Idle configuration
+#
+# Example configuration:
+#
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+exec fcitx
 
 ### Input configuration
 #
@@ -55,6 +71,7 @@ input "1278:13:PFU_Limited__HHKB_Professional_JP" {
     bindsym $mod+m exec emacs
     bindsym $mod+n exec nautilus
     bindsym $mod+c exec firefox
+    bindsym $mod+o exec swaylock -c 000000
 
     # start a terminal
     bindsym $mod+Return exec $term
@@ -75,8 +92,8 @@ input "1278:13:PFU_Limited__HHKB_Professional_JP" {
     # reload the configuration file
     bindsym $mod+Shift+c reload
 
-    # exit sway (logs you out of your wayland session)
-    bindsym $mod+Shift+e exit
+    # exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -173,16 +190,16 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10 px or 10 ppt
-    bindsym $down resize grow height 10 px or 10 ppt
-    bindsym $up resize shrink height 10 px or 10 ppt
-    bindsym $right resize grow width 10 px or 10 ppt
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
 
     # ditto, with arrow keys
-    bindsym Left resize shrink width 10 px or 10 ppt
-    bindsym Down resize grow height 10 px or 10 ppt
-    bindsym Up resize shrink height 10 px or 10 ppt
-    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
 
     # return to default mode
     bindsym Return mode "default"
@@ -205,7 +222,3 @@ bar {
 }
 
 include /etc/sway/config.d/*
-
-exec swayidle -w timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
-exec fcitx
-bindsym $mod+o exec swaylock -c 000000
