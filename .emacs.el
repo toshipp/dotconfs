@@ -148,7 +148,7 @@
         (setq x-select-enable-clipboard t)
         (set-face-attribute 'default nil
                             :family "DejaVu Sans Mono"
-                            :height 105)
+                            :height 160)
         (set-fontset-font (frame-parameter nil 'font)
                           'japanese-jisx0208
                           '("M+ 2m" . "iso10646-1")
