@@ -24,7 +24,7 @@ exec_always {
     gsettings set org.gnome.desktop.interface cursor-size $my_cursor_size
 }
 
-font monospace 12
+font monospace 14
 
 ### Output configuration
 #
@@ -222,7 +222,7 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
     position bottom
-    font "monospace 14"
+    font monospace 14
     colors {
         statusline #ffffff
         background #323232
