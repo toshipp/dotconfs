@@ -72,6 +72,17 @@ input "1278:13:PFU_Limited__HHKB_Professional_JP" {
       repeat_rate 70
 }
 
+input "1:1:AT_Translated_Set_2_keyboard" {
+      xkb_layout jp
+      xkb_options ctrl:swapcaps
+      repeat_delay 250
+      repeat_rate 70
+}
+
+input "type:touchpad" {
+    natural_scroll enabled
+}
+
 ### Key bindings
 #
 # Basics:
