@@ -196,7 +196,8 @@
 (define-key flymake-mode-map (kbd "M-p") 'flymake-goto-prev-error)
 
 ;; eglot
-(require 'eglot)
+(when (require 'eglot nil t)
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 (setf (alist-get 'go-mode eglot-server-programs)
       '("bingo"))
 
