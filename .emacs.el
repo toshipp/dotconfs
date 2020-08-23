@@ -40,6 +40,7 @@
     nginx-mode
     lua-mode
     migemo
+    clang-format
     ))
 
 ;; auto install
@@ -77,9 +78,7 @@
 (when (require 'helm-config nil t)
   (require 'helm)
   (setq helm-split-window-in-side-p t
-        helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t)
+        helm-completion-style 'helm)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
   (global-set-key (kbd "M-x") 'helm-M-x)
@@ -314,6 +313,12 @@ See: `https://github.com/joaotavora/eglot'."
 (push '("\\.cu$" . c++-mode) auto-mode-alist)
 (push '("\\.ic$" . c++-mode) auto-mode-alist)
 
+(defun clang-format-before-save ()
+  (when (eq major-mode 'c++-mode)
+    (when (locate-dominating-file "." ".clang-format")
+      (clang-format-buffer))))
+(add-hook 'before-save-hook 'clang-format-before-save)
+
 ;; web-mode
 (push '("\\.html\\'" . web-mode) auto-mode-alist)
 
@@ -362,6 +367,5 @@ See: `https://github.com/joaotavora/eglot'."
  '(ido-auto-merge-work-directories-length -1)
  '(ido-enable-flex-matching t)
  '(package-selected-packages
-   (quote
-    (eglot php-mode yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode company)))
+   '(clang-format scala-mode eglot php-mode yaml-mode web-mode undo-tree toml-mode rust-mode quickrun nginx-mode markdown-mode lua-mode json-mode js2-mode helm-projectile helm-gtags go-mode company))
  '(rust-format-on-save t))
