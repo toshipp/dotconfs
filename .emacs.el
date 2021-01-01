@@ -41,6 +41,7 @@
     lua-mode
     migemo
     clang-format
+    reformatter
     ))
 
 ;; auto install
@@ -338,6 +339,20 @@ See: `https://github.com/joaotavora/eglot'."
                           (eglot-ensure)
                           (company-mode)
                           (helm-gtags-mode 0)))
+
+;; verilog-mode
+(require 'reformatter)
+(reformatter-define verilog-format
+                    :program "verible-verilog-format"
+                    :args '("-"))
+(add-hook 'verilog-mode-hook (lambda()
+                               (setq verilog-indent-level 2)
+                               (setq verilog-indent-level-module 2)
+                               (setq verilog-indent-level-declaration 2)
+                               (setq verilog-indent-level-behavioral 2)
+                               (setq verilog-auto-lineup nil)
+                               (setq verilog-auto-endcomments nil)
+                               (verilog-format-on-save-mode)))
 
 ;; my interactives
 (defun use-local-bin ()
