@@ -344,7 +344,7 @@ See: `https://github.com/joaotavora/eglot'."
 (require 'reformatter)
 (reformatter-define verilog-format
                     :program "verible-verilog-format"
-                    :args '("-"))
+                    :args '("--try_wrap_long_lines" "-"))
 (add-hook 'verilog-mode-hook (lambda()
                                (setq verilog-indent-level 2)
                                (setq verilog-indent-level-module 2)
@@ -352,6 +352,7 @@ See: `https://github.com/joaotavora/eglot'."
                                (setq verilog-indent-level-behavioral 2)
                                (setq verilog-auto-lineup nil)
                                (setq verilog-auto-endcomments nil)
+                               (setq verilog-auto-newline nil)
                                (verilog-format-on-save-mode)))
 
 ;; my interactives
