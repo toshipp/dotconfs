@@ -56,7 +56,9 @@
   (("RET" . electric-newline-and-maybe-indent)
    ("C-j" . newline)))
 
-(use-package recentf)
+(use-package recentf
+  :init
+  (recentf-mode 1))
 
 (use-package ido
   :custom
