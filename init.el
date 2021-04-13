@@ -233,4 +233,5 @@
   (("C-x C-b" . counsel-switch-buffer)
    ("M-x" . counsel-M-x)
    ("M-y" . counsel-yank-pop)
-   ("C-x M-f" . counsel-recentf)))
+   ("C-x M-f" . counsel-recentf)
+   ("C-x C-d" . counsel-git)))
