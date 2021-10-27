@@ -54,7 +54,7 @@ exec swayidle -w \
             before-sleep 'swaylock -f -c 000000'
 
 
-exec fcitx
+exec fcitx5
 
 ### Input configuration
 #
