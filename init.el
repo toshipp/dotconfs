@@ -134,7 +134,8 @@
                       ("\\.hpp$" (".cpp" ".c"))
                       ("\\.cu$"  (".h"))))
               (c-set-style "stroustrup")
-              (c-toggle-hungry-state 1)))
+              (c-toggle-hungry-state 1)
+              (ggtags-mode 1)))
   :bind
   (:map c-mode-base-map
         ("M-t" . ff-find-other-file)))
@@ -235,3 +236,6 @@
    ("M-y" . counsel-yank-pop)
    ("C-x M-f" . counsel-recentf)
    ("C-x C-d" . counsel-git)))
+
+(use-package ggtags
+  :ensure t)
