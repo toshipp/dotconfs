@@ -176,6 +176,8 @@
 
 (use-package undo-tree
   :ensure t
+  :custom
+  (undo-tree-auto-save-history nil)
   :init
   (global-undo-tree-mode))
 
