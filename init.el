@@ -241,3 +241,6 @@
 
 (use-package ggtags
   :ensure t)
+
+(use-package yaml-mode
+  :ensure t)
