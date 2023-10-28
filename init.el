@@ -16,6 +16,7 @@
 (global-font-lock-mode 1)
 (line-number-mode 1)
 (column-number-mode 1)
+(global-display-line-numbers-mode)
 
 (setq inhibit-startup-message t)
 
@@ -83,10 +84,6 @@
   (set-face-background 'whitespace-trailing "Purple")
   :custom
   (whitespace-style '(face tab-mark trailing)))
-
-(use-package linum
-  :init
-  (global-linum-mode))
 
 (use-package flymake
   :bind
