@@ -246,3 +246,6 @@
   :config
   (setq treesit-auto-install t)
   (global-treesit-auto-mode))
+
+(use-package go-mode
+  :ensure t)
