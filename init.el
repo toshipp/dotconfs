@@ -240,3 +240,9 @@
 
 (use-package yaml-mode
   :ensure t)
+
+(use-package treesit-auto
+  :ensure t
+  :config
+  (setq treesit-auto-install t)
+  (global-treesit-auto-mode))
