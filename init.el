@@ -249,3 +249,6 @@
 
 (use-package go-mode
   :ensure t)
+
+(use-package php-mode
+  :ensure t)
