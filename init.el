@@ -137,6 +137,10 @@
   (:map c-mode-base-map
         ("M-t" . ff-find-other-file)))
 
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
+
 ;; temporary fix. need investigation.
 (use-package epg-config
   :custom
@@ -218,11 +222,6 @@
               (when (eq major-mode 'c++-mode)
                 (when (locate-dominating-file "." ".clang-format")
                   (clang-format-buffer))))))
-
-(use-package eglot
-  :ensure t
-  :config
-  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 
 (use-package eldoc-box
   :ensure t)
