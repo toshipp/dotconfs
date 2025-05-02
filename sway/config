@@ -229,6 +229,10 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+bindsym $mod+Shift+Control+down output * transform 0
+bindsym $mod+Shift+Control+left output * transform 90
+bindsym $mod+Shift+Control+right output * transform 270
+
 #
 # Status Bar:
 #
